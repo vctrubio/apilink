@@ -13,6 +13,22 @@ print(f'init: ENV YT_API_KEY: {yt_api_key}')
 
 youtube_service = build('youtube', 'v3', developerKey=yt_api_key)
 
+def v1(response):
+    if 'itmes' in response:
+        channel = response['items'][0]
+        channel_id = channel['id']
+        channel_title = channel['snippet']['title']
+        subscriber_count = channel['statistics']['subscriberCount']
+        view_count = channel['statistics']['viewCount']
+
+        # Print the retrieved information
+        print(f"Channel ID: {channel_id}")
+        print(f"Channel Title: {channel_title}")
+        print(f"Subscriber Count: {subscriber_count}")
+        print(f"Total Views: {view_count}")
+    else:
+        print("No channel found.")
+
 def call_yt(user='UCSI8iRkVKxEW1QRowCB_slg'):
     try:
         request = youtube_service.channels().list(
@@ -22,20 +38,7 @@ def call_yt(user='UCSI8iRkVKxEW1QRowCB_slg'):
         response = request.execute()
         print(json.dumps(response, indent=2))
 
-        if 'items' in response:
-            channel = response['items'][0]
-            channel_id = channel['id']
-            channel_title = channel['snippet']['title']
-            subscriber_count = channel['statistics']['subscriberCount']
-            view_count = channel['statistics']['viewCount']
-
-            # Print the retrieved information
-            print(f"Channel ID: {channel_id}")
-            print(f"Channel Title: {channel_title}")
-            print(f"Subscriber Count: {subscriber_count}")
-            print(f"Total Views: {view_count}")
-        else:
-            print("No channel found.")
+        v1(response)
 
     except Exception as e:
         print(e)
