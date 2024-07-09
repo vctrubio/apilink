@@ -14,7 +14,7 @@ print(f'init: ENV YT_API_KEY: {yt_api_key}')
 youtube_service = build('youtube', 'v3', developerKey=yt_api_key)
 
 def v1(response):
-    if 'itmes' in response:
+    if 'items' in response:
         channel = response['items'][0]
         channel_id = channel['id']
         channel_title = channel['snippet']['title']
